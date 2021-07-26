@@ -26,17 +26,17 @@ Datasets: The set of disaster messages is available and can be downloaded from [
 
 #### To run the project:
 
-Run the following commands in the project's root directory to set up your database and model.
+Run the following commands in the project's root directory.
 
-To run ETL pipeline that cleans data and stores in database
+To run the ETL pipeline that cleans data and stores it in a database:
 ```
   python3 data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
 ```
-To run ML pipeline that trains classifier and saves
+To run the ML pipeline that trains classifier and saves the model in a pickle file:
 ```
   python3 models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
 ```
-Run the following command in the app's directory to run your web app.
+To run the web app:
 ```
   python3 run.py
 ```
@@ -48,8 +48,9 @@ For this project, I have tried to build a disaster response web application that
 
 ### Web Application Demo <a name="demo"></a>
 
-The web application successfully classifies the message "Due to heavy rains, there's flood in Mumbai. Help neeeded" into categories such as aid related, and search and rescue. 
-![demo-image]()
+The web application successfully classifies the message "Due to heavy rains, there's flood in Mumbai. Help neeeded" into categories such as aid related, and search and rescue.
+ 
+![demo-image](https://github.com/nazianafis/Disaster-Response-Pipeline/blob/main/webapp-demo.PNG)
 
-## Author<a name="author"></a>
+## Author <a name="author"></a>
 * [Nazia N.](https://github.com/nazianafis)
