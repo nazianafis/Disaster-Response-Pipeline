@@ -1,14 +1,17 @@
+# Import Libraries
 import sys
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
 
+# Load Data
 def load_data(messages_filepath, categories_filepath):
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = pd.merge(messages,categories,on='id')
     return df 
 
+# Clean Data
 def clean_data(df):
     categories = df['categories'].str.split(pat=';',expand=True)
     
@@ -25,12 +28,13 @@ def clean_data(df):
     df = df.drop_duplicates()
     return df
 
-
+# Save Data
 def save_data(df, database_filename):
     engine = create_engine('sqlite:///'+ database_filename)
     table_name = database_filename.replace(".db","") + "_table"
     df.to_sql(table_name, engine, index=False, if_exists='replace')
 
+    
 def main():
     if len(sys.argv) == 4:
 
@@ -46,7 +50,7 @@ def main():
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         save_data(df, database_filepath)
         
-        print('Cleaned data saved to database!')
+        print('Cleaned data saved to the database.')
     
     else:
         print('Please provide the filepaths of the messages and categories '\
