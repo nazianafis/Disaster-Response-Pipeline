@@ -30,15 +30,15 @@ Run the following commands in the project's root directory.
 
 To run the ETL pipeline that cleans data and stores it in a database:
 ```
-  python3 data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+  $ python3 data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
 ```
 To run the ML pipeline that trains classifier and saves the model in a pickle file:
 ```
-  python3 models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+  $ python3 models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
 ```
 To run the web app:
 ```
-  python3 run.py
+  $ python3 run.py
 ```
 Go to http://0.0.0.0:3001/ or localhost:3001
 
