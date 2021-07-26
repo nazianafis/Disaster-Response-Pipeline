@@ -1,11 +1,11 @@
 import json
 import plotly
 import pandas as pd
-import nltk
 import joblib
 
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+
 from sklearn.base import BaseEstimator, TransformerMixin
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -39,7 +39,6 @@ def tokenize(text):
     for tok in tokens:
         clean_tok = lemmatizer.lemmatize(tok).lower().strip()
         clean_tokens.append(clean_tok)
-
     return clean_tokens
 
 # Load Data
@@ -52,15 +51,14 @@ model = joblib.load("../models/classifier.pkl")
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
+
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
     # Create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -69,7 +67,6 @@ def index():
                     y=genre_counts
                 )
             ],
-
             'layout': {
                 'title': 'Distribution of Message Genres',
                 'yaxis': {
@@ -93,6 +90,7 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    
     # save user input in query
     query = request.args.get('query', '') 
 
@@ -104,13 +102,12 @@ def go():
     return render_template(
         'go.html',
         query=query,
-        classification_result=classification_results
-    )
+        classification_result=classification_results)
+
 
 
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
-
 
 if __name__ == '__main__':
     main()
