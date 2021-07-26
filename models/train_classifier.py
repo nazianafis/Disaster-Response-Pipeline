@@ -1,3 +1,4 @@
+# Import Libraries
 import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -58,18 +59,27 @@ def load_data(database_filepath):
 
 
 def tokenize(text,url_place_holder_string="urlplaceholder"):
+    """Tokenization function. Receives as input raw text which afterwards normalized, stop words removed, stemmed and lemmatized.
+    Returns tokenized text"""
+    
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls = re.findall(url_regex, text)
     for detected_url in detected_urls:
         text = text.replace(detected_url, url_place_holder_string)
 
+    # Tokenize
     tokens = nltk.word_tokenize(text)
+    
+    # Lemmatize
     lemmatizer = nltk.WordNetLemmatizer()
+    
     clean_tokens = [lemmatizer.lemmatize(w).lower().strip() for w in tokens]
     return clean_tokens
 
 
 def build_model():
+    
+    # Set Pipeline
     pipeline = Pipeline([
         ('features', FeatureUnion([
             ('text_pipeline', Pipeline([
@@ -87,13 +97,18 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
     overall_accuracy = (Y_pred == Y_test).mean().mean()
     print('Average overall accuracy {0:.2f}%'.format(overall_accuracy*100))
+    
+    #Convert to a Dataframe
     Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
+    
     for column in Y_test.columns:
         print('Model Performance with Category: {}'.format(column))
         print(classification_report(Y_test[column],Y_pred[column]))
 
 
 def save_model(model, model_filepath):
+    """ Saving model's best_estimator_ using pickle
+    """
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
@@ -104,16 +119,16 @@ def main():
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
         
-        print('Building model...')
+        print('Building model..')
         model = build_model()
         
-        print('Training model...')
+        print('Training model..')
         model.fit(X_train, Y_train)
         
-        print('Evaluating model...')
+        print('Evaluating model..')
         evaluate_model(model, X_test, Y_test, category_names)
 
-        print('Saving model...\n    MODEL: {}'.format(model_filepath))
+        print('Saving model..\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
         print('Trained model saved!')
