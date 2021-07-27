@@ -1,4 +1,4 @@
-# Import Libraries
+# import libraries
 import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -42,73 +42,97 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         X_tagged = pd.Series(X).apply(self.starting_verb)
         return pd.DataFrame(X_tagged)
 
-
+# load Data
 def load_data(database_filepath):
+    '''
+    Function to retreive data from sql database (database_filepath) and split the dataframe into X and y variable
+    Input: Databased filepath
+    Output: Returns the Features X & target y along with target columns names catgeory_names
+    '''
+
     engine = create_engine('sqlite:///' + database_filepath)
     table_name = os.path.basename(database_filepath).replace(".db","") + "_table"
 
-    df = pd.read_sql_table(table_name,engine)
-    df = df.drop(['child_alone'],axis=1)
-    df['related']=df['related'].map(lambda x: 1 if x == 2 else x)
-    
+    df = pd.read_sql("SELECT * FROM _table", engine)
+
     X = df['message']
     y = df.iloc[:,4:]
 
     category_names = y.columns
     return X, y, category_names
 
-
 def tokenize(text,url_place_holder_string="urlplaceholder"):
-    """Tokenization function. Receives as input raw text which afterwards normalized, stop words removed, stemmed and lemmatized.
-    Returns tokenized text"""
-    
+    '''
+    Function to clean the text data  and apply tokenize and lemmatizer function
+    Return the clean tokens
+    Input: text
+    Output: cleaned tokenized text as a list object
+    '''
+
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls = re.findall(url_regex, text)
     for detected_url in detected_urls:
         text = text.replace(detected_url, url_place_holder_string)
 
-    # Tokenize
     tokens = nltk.word_tokenize(text)
-    
-    # Lemmatize
     lemmatizer = nltk.WordNetLemmatizer()
-    
     clean_tokens = [lemmatizer.lemmatize(w).lower().strip() for w in tokens]
     return clean_tokens
 
 
 def build_model():
-    
-    # Set Pipeline
+    '''
+    Function to build a model, create pipeline, hypertuning as well as gridsearchcv
+    Input: N/A
+    Output: Returns the model
+    '''
+
     pipeline = Pipeline([
         ('features', FeatureUnion([
             ('text_pipeline', Pipeline([
                 ('count_vectorizer', CountVectorizer(tokenizer=tokenize)),
-                ('tfidf_transformer', TfidfTransformer())
+                ('tfidf', TfidfTransformer())
             ])),
             ('starting_verb_transformer', StartingVerbExtractor())
         ])),
-        ('classifier', MultiOutputClassifier(AdaBoostClassifier()))
+        ('clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
 
-    return pipeline
+    parameters = {
+        'features__text_pipeline__tfidf__use_idf': (True, False),
+        'clf__estimator__n_estimators': [10, 50, 100]
+    }
+
+    cv = GridSearchCV(pipeline, param_grid=parameters)
+
+    return cv
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Function to evaluate a model and return the classificatio and accurancy score.
+    Inputs: Model, X_test, y_test, Catgegory_names
+    Outputs: Prints the Classification report & Accuracy Score
+    '''
+
     Y_pred = model.predict(X_test)
     overall_accuracy = (Y_pred == Y_test).mean().mean()
+
     print('Average overall accuracy {0:.2f}%'.format(overall_accuracy*100))
-    
-    #Convert to a Dataframe
+
     Y_pred = pd.DataFrame(Y_pred, columns = Y_test.columns)
-    
+
     for column in Y_test.columns:
         print('Model Performance with Category: {}'.format(column))
         print(classification_report(Y_test[column],Y_pred[column]))
 
 
 def save_model(model, model_filepath):
-    """ Saving model's best_estimator_ using pickle
-    """
+    '''
+    Function to save the model as pickle file in the directory
+    Input: model and the file path to save the model
+    Output: save the model as pickle file in the give filepath 
+    '''
+    
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
@@ -119,16 +143,16 @@ def main():
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
         
-        print('Building model..')
+        print('Building model...')
         model = build_model()
         
-        print('Training model..')
+        print('Training model...')
         model.fit(X_train, Y_train)
         
-        print('Evaluating model..')
+        print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
 
-        print('Saving model..\n    MODEL: {}'.format(model_filepath))
+        print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
         print('Trained model saved!')

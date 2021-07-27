@@ -1,40 +1,65 @@
-# Import Libraries
+# import libraries
 import sys
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
 
-# Load Data
 def load_data(messages_filepath, categories_filepath):
+    '''
+    INPUT
+    file paths of the message and categories files in cvs format
+    OUTPUT
+    a dataframe contains both dataset
+    '''
+
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = pd.merge(messages,categories,on='id')
+
     return df 
 
-# Clean Data
-def clean_data(df):
-    categories = df['categories'].str.split(pat=';',expand=True)
+def clean_data(df): 
+    '''
+    INPUT
+    a dataframe with both messages and categories for data cleaning
+    OUTPUT
+    cleaned dataframe, with new expanding columns for each message category
+    '''
     
-    row = categories.iloc[[1]]
-    category_colnames = [category_name.split('-')[0] for category_name in row.values[0]]
-    categories.columns = category_colnames
-    
+    # split categories into separate category column
+    categories = df['categories'].str.split(';',expand=True)
+    new_names = pd.Series(categories.loc[0].values).str.split('-', expand = True)[0].values
+    new_names = dict(zip(np.arange(categories.shape[0]), new_names))
+
+    # rename the new splitted columns
+    categories = categories.rename(columns = new_names)
+
     for column in categories:
         categories[column] = categories[column].str[-1]
         categories[column] = categories[column].astype(np.int)
-    
-    df = df.drop('categories',axis=1)
-    df = pd.concat([df,categories],axis=1)
-    df = df.drop_duplicates()
+
+    # Replace 'categories' column in df with new category columns and drop duplicates    
+    df.drop(['categories'], axis = 1, inplace = True)
+    df = pd.concat([df, categories], axis=1, join="inner").drop_duplicates()
+
+    # correcing the mislabels to binary
+    df.loc[df['related'] > 1,'related'] = 0
+
     return df
 
-# Save Data
+
 def save_data(df, database_filename):
+    '''
+    INPUT
+    cleaned dataframe and the filepath for the SQL database for saving the dataframe
+    OUTPUT
+    None
+    '''
+
     engine = create_engine('sqlite:///'+ database_filename)
     table_name = database_filename.replace(".db","") + "_table"
-    df.to_sql(table_name, engine, index=False, if_exists='replace')
+    df.to_sql("_table", engine, index=False, if_exists='replace')
 
-    
 def main():
     if len(sys.argv) == 4:
 
@@ -50,7 +75,7 @@ def main():
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         save_data(df, database_filepath)
         
-        print('Cleaned data saved to the database.')
+        print('Cleaned data saved to database!')
     
     else:
         print('Please provide the filepaths of the messages and categories '\
