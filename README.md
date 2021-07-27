@@ -20,19 +20,19 @@ The omnipresence of smartphones has enabled people to call for help in the event
 ### File Description <a name="description"></a>
     Disaster-Response-Pipeline
         ├── data                   
-        │   ├── disaster_categories.csv          # Disaster cateroies dataset for processing
+        │   ├── disaster_categories.csv          # Disaster categories dataset for processing
         │   ├── disaster_messages.csv            # Sample disaster messages dataset for processing
-        │   └── process_data.py                  # Data cleaning process script
-        |   └── DisasterResponse.db              # Final database
+        │   └── process_data.py                  # Data cleaning processing script
+        |   └── DisasterResponse.db              # Final database, generated as a result of process_data.py
         ├── app     
         │   ├── run.py                           # Flask file that runs the web app
         │   └── templates   
         │       ├── go.html                      # Classification result page of web app
         │       └── master.html                  # Main page of web app
         ├── models
-        │   ├── train_classifier.py              # ML model process script
-        |   └── classifier.pkl                   # Trained ML model
-        ├── webapp-demo.PNG                      # Image for README.md
+        │   ├── train_classifier.py              # ML model processing script
+        |   └── classifier.pkl                   # Trained ML model, generated as a result of train_classifier.py
+        ├── webapp-demo.PNG
         └── README.md
     
 
