@@ -45,9 +45,9 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
 # load Data
 def load_data(database_filepath):
     '''
-    Function to retreive data from sql database (database_filepath) and split the dataframe into X and y variable
-    Input: Databased filepath
-    Output: Returns the Features X & target y along with target columns names catgeory_names
+    Function to retrieve data from sql database (database_filepath) and split the dataframe into X and y variables
+    Input: Database filepath
+    Output: Returns the Features X & target y along with target column names catgeory_names
     '''
 
     engine = create_engine('sqlite:///' + database_filepath)
@@ -63,8 +63,8 @@ def load_data(database_filepath):
 
 def tokenize(text,url_place_holder_string="urlplaceholder"):
     '''
-    Function to clean the text data  and apply tokenize and lemmatizer function
-    Return the clean tokens
+    Function to clean the text data and apply tokenize and lemmatizer function
+    Return clean tokens
     Input: text
     Output: cleaned tokenized text as a list object
     '''
@@ -82,8 +82,8 @@ def tokenize(text,url_place_holder_string="urlplaceholder"):
 
 def build_model():
     '''
-    Function to build a model, create pipeline, hypertuning as well as gridsearchcv
-    Input: N/A
+    Function to build a model, create pipeline, hypertune and GridSearchCV
+    Input: None
     Output: Returns the model
     '''
 
@@ -109,8 +109,8 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names):
     '''
-    Function to evaluate a model and return the classificatio and accurancy score.
-    Inputs: Model, X_test, y_test, Catgegory_names
+    Function to evaluate a model and return classification and accuracy score.
+    Inputs: Model, X_test, y_test, Category_names
     Outputs: Prints the Classification report & Accuracy Score
     '''
 
@@ -128,8 +128,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 def save_model(model, model_filepath):
     '''
-    Function to save the model as pickle file in the directory
-    Input: model and the file path to save the model
+    Function to save the model as a pickle file in the directory
+    Input: model and file path to save the model
     Output: save the model as pickle file in the give filepath 
     '''
     
