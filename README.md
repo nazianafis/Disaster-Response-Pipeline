@@ -17,14 +17,24 @@ The omnipresence of smartphones has enabled people to call for help in the event
 ## Getting Started <a name="getting-started"></a>
 
 ### File Description <a name="description"></a>
-* data: This folder contains all the .csv files, .db file and .py file
-    * disaster_categories.csv, disaster_messages.csv: These files inside the data folder contains messages, their genres and different categories they beong to.
-    * process_data.py: This code takes as its input csv files containing message data and message categories, and creates an SQLite database containing a merged and cleaned version of this data.
-    * disaster.db: This file is the database which is used to fetch data whenever needed.
-* models: This folder contains the ML pipeline and the pickle file.
-    * train_classifier.py: This code takes the SQLite database produced by process_data.py as an input and uses the data contained within it to train and tune a ML model for categorizing messages. The output is a pickle file containing the fitted model. Test evaluation metrics are also printed as part of the training process.
-    * classifier.pkl: This file contains the fitted model so we do not need to fit the model again
-* app: This folder contains run.py and templates which are used to run our main web application.
+    Disaster-Response-Pipeline
+        |
+        ├── data                   
+        │   ├── disaster_categories.csv          # Disaster cateroies dataset for processing
+        │   ├── disaster_messages.csv            # Sample disaster messages dataset for processing
+        │   └── process_data.py                  # Data cleaning process script
+        |   └── DisasterResponse.db              # Final database
+        ├── app     
+        │   ├── run.py                           # Flask file that runs the web app
+        │   └── templates   
+        │       ├── go.html                      # Classification result page of web app
+        │       └── master.html                  # Main page of web app
+        ├── models
+        │   ├── train_classifier.py              # ML model process script
+        |   └── classifier.pkl                   # Trained ML model
+        ├── webapp-demo.PNG                      # Image for README.md
+        └── README.md
+    
 
 ### Dependencies <a name="dependencies"></a>
 * Python 3.*
