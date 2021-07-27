@@ -59,7 +59,7 @@ To run the ML pipeline that trains classifier and saves the model in a pickle fi
 ```
 To run the web app:
 ```
-  $ python3 run.py
+  $ python3 app/run.py
 ```
 Go to http://0.0.0.0:3001/ or localhost:3001
 
