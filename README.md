@@ -3,17 +3,28 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Getting Started](#getting-started)
+2. [File Description](description)
+3. [Getting Started](#getting-started)
     1. [Dependencies](#dependencies)
-    2. [Installation](#installation)
-3. [Project Motivation](#project-motivation)
-4. [Web Application Demo](#demo)
-3. [Author](#author)
+    3. [Installation](#installation)
+4. [Project Motivation](#project-motivation)
+5. [Web Application Demo](#demo)
+6. [Author](#author)
 
 ## Overview <a name="overview"></a>
 The omnipresence of smartphones has enabled people to call for help in the event of a disaster/emergency in real-time. This project programmatically monitors such messages, which can then be forwarded to respective relief organizations for targeted disaster response.
 
 ## Getting Started <a name="getting-started"></a>
+
+### File Description <a name="description"></a>
+* data: This folder contains all the .csv files, .db file and .py file
+    * disaster_categories.csv, disaster_messages.csv: These files inside the data folder contains messages, their genres and different categories they beong to.
+    * process_data.py: This code takes as its input csv files containing message data and message categories, and creates an SQLite database containing a merged and cleaned version of this data.
+    * disaster.db: This file is the database which is used to fetch data whenever needed.
+* models: This folder contains the ML pipeline and the pickle file.
+    * train_classifier.py: This code takes the SQLite database produced by process_data.py as an input and uses the data contained within it to train and tune a ML model for categorizing messages. The output is a pickle file containing the fitted model. Test evaluation metrics are also printed as part of the training process.
+    * classifier.pkl: This file contains the fitted model so we do not need to fit the model again
+* app: This folder contains run.py and templates which are used to run our main web application.
 
 ### Dependencies <a name="dependencies"></a>
 * Python 3.*
