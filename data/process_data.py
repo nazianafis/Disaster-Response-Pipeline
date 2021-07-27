@@ -7,9 +7,9 @@ from sqlalchemy import create_engine
 def load_data(messages_filepath, categories_filepath):
     '''
     INPUT
-    file paths of the message and categories files in cvs format
+    file paths of the message and categories files in csv format
     OUTPUT
-    a dataframe contains both dataset
+    a dataframe that contains both datasets
     '''
 
     messages = pd.read_csv(messages_filepath)
