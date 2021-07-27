@@ -6,19 +6,19 @@
 2. [File Description](description)
 3. [Getting Started](#getting-started)
     1. [Dependencies](#dependencies)
-    3. [Installation](#installation)
+    2. [Installation](#installation)
 4. [Project Motivation](#project-motivation)
 5. [Web Application Demo](#demo)
 6. [Author](#author)
+7. [Acknowledgments](#ack)
 
 ## Overview <a name="overview"></a>
-The omnipresence of smartphones has enabled people to call for help in the event of a disaster/emergency in real-time. This project programmatically monitors such messages, which can then be forwarded to respective relief organizations for targeted disaster response.
+The omnipresence of smartphones has enabled people to call for help in the event of a disaster/emergency in real-time. This project monitors such SOS messages, which can then be forwarded to respective relief organizations for a targeted disaster response.
 
 ## Getting Started <a name="getting-started"></a>
 
 ### File Description <a name="description"></a>
     Disaster-Response-Pipeline
-        |
         ├── data                   
         │   ├── disaster_categories.csv          # Disaster cateroies dataset for processing
         │   ├── disaster_messages.csv            # Sample disaster messages dataset for processing
@@ -43,7 +43,7 @@ The omnipresence of smartphones has enabled people to call for help in the event
 
 ### Installation <a name="installation"></a>
 
-Datasets: The set of disaster messages is available and can be downloaded from [here](https://github.com/nazianafis/Disaster-Response-Pipeline/blob/main/data/disaster_messages.csv). Disaster categories are [here](https://github.com/nazianafis/Disaster-Response-Pipeline/blob/main/data/disaster_categories.csv).
+Datasets: The set of sample disaster SOS messages can be downloaded from [here](https://github.com/nazianafis/Disaster-Response-Pipeline/blob/main/data/disaster_messages.csv). Disaster categories are available [here](https://github.com/nazianafis/Disaster-Response-Pipeline/blob/main/data/disaster_categories.csv).
 
 #### To run the project:
 
@@ -75,3 +75,7 @@ The web application successfully classifies the message "Due to heavy rains, the
 
 ## Author <a name="author"></a>
 * [Nazia N.](https://github.com/nazianafis)
+
+## Acknowledgements <a name="ack"></a>
+
+* Udacity and Figure Eight for providing the relevant dataset to train the model.
