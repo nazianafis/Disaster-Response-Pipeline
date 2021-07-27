@@ -37,9 +37,13 @@ The omnipresence of smartphones has enabled people to call for help in the event
     
 
 ### Dependencies <a name="dependencies"></a>
-* Python 3.*
-* Libraries: Pandas, Sqlalchemy, Plotly, Pickle
-* Flask
+*    Python 3.5+
+*    Machine Learning Libraries: NumPy, SciPy, Pandas, Sciki-Learn
+*    Natural Language Process Libraries: NLTK
+*    SQLlite Database Libraqries: SQLalchemy
+*    Model Loading and Saving Library: Pickle, joblib
+*    Web App and Data Visualization: Flask, Plotly
+
 
 ### Installation <a name="installation"></a>
 
